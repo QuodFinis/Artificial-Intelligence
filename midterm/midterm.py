@@ -9,7 +9,7 @@ class Player:
         self.wins = 0
         self.losses = 0
         self.ties = 0
-        self.win_rate_history = []
+        self.win_loss_history = [] # [w, l , w ,w w, l]
         self.variance_of_performance = 0
         self.game_time = 0
         self.avg_time = 0
@@ -46,17 +46,17 @@ class Player:
         total_games = self.wins + self.losses + self.ties
         win_rate = self.wins / total_games
 
-        self.win_rate_history.append(win_rate)
+        self.win_loss_history.append(win_rate)
 
-        if len(self.win_rate_history) < 2:
+        if len(self.win_loss_history) < 2:
             variance_of_performance = 0
         else:
-            mean = sum(self.win_rate_history) / len(self.win_rate_history)
+            mean = sum(self.win_loss_history) / len(self.win_loss_history)
             variance_of_performance = math.sqrt(
-                sum((x - mean) ** 2 for x in self.win_rate_history) / len(self.win_rate_history))
+                sum((x - mean) ** 2 for x in self.win_loss_history) / len(self.win_loss_history))
 
-        if len(self.win_rate_history) >= 10:
-            last_10_games = self.win_rate_history[-10:]
+        if len(self.win_loss_history) >= 10:
+            last_10_games = self.win_loss_history[-10:]
             last_10_win_rate = sum(last_10_games) / 10
             trend_of_performance = last_10_win_rate - win_rate
         else:
@@ -214,7 +214,7 @@ class TicTacToe:
                 square = current_player.get_move(self)  # get the move from the current player
 
                 if self.make_move(square, letter):
-                    print(f'{current_player.name} ({letter}) makes a move to square {square}')  # print the name and the letter of the current player
+                    print(f'{current_player.name} ({letter}) makes a move to square {square}')
                     self.print_board()
                     print('')
 
